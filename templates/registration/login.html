@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col">
+        </div>
+
+        <div class="col text-center">
+            <div class="container my-5">
+                {% if form.errors %}
+                    <p>Uw gebruikersnaam en password komen niet overeen.</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <p>Uw account heeft geen toegang tot deze pagina.</p>
+                    {% else %}
+                        <p>Log in om toegang te krijgen tot deze pagina.</p>
+                    {% endif %}
+                {% endif %}
+
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="text" name="username" class="form-control text-24w-LightBlue" placeholder="Gebruikersnaam">
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="password" name="password" class="form-control text-24w-LightBlue" placeholder="Password">
+                            </div>
+
+                    <input type="submit" class="btn bg-24w-LightBlue text-white m-3" value="Inloggen">
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+            </div>
+        </div>
+
+        <div class="col">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+k %}

@@ -1,11 +1,31 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</body>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custome theme -->
+    <link href="{% static 'css/stylesheet/custome_theme.css' %}" rel="stylesheet" type="text/css">
+
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+<!--    {% include 'footer.html' %}-->
+    <!-- Bootstrap Javascript -->
+    <script src="{% static 'javascript/bootstrap/bootstrap.min.js' %}"></script>
+    {% block javascript %}
+    {% endblock %}
+  </body>
 </html>
