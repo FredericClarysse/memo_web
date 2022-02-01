@@ -4,12 +4,16 @@
 {% block content %}
 <div class="row">
     <div class="col-sm">
-
     </div>
     <div class="col-sm">
-        {% for subject in subjects %}
-        <p><a  href="#">{{ subject}}</a></p>
-        {% endfor %}
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Subject</span>
+          <input type="text" id="searchField" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <table class="table">
+          <tbody id="tableBody">
+          </tbody>
+        </table>
     </div>
     <div class="col-sm">
 
@@ -19,4 +23,33 @@
 {% endblock content %}
 
 {% block javascript %}
+<script>
+    document.onload = getData()
+
+    document.getElementById("searchField").addEventListener("input", getData)
+
+    function getData() {
+        const input = document.getElementById("searchField").value
+        fetch(window.location + 'ajax/' + input)
+        // returns promise, resolve with response object
+        .then(response => response.json())
+        .then(data => buildTable(data))
+    }
+
+    function buildTable(data) {
+        console.log("Build table")
+        const tableBody = document.getElementById("tableBody")
+        let rows = ""
+        for(let i = 0; i < data.length; i++) {
+            rows = rows + `<tr><td><a href="/flashcard/${data[i].slug}/">${data[i].name}</a><td></tr>`
+        }
+        tableBody.innerHTML = rows
+        console.log("Render complete")
+    };
+
+
+
+
+</script>
+
 {% endblock %}%}

@@ -18,3 +18,4 @@ class SubjectTestCase(TestCase):
         subject = Subject.objects.get(name='This is a subject')
         self.assertEqual(subject.slug, 'john/this-is-a-subject/')
 
+

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm col-4">
+    </div>
+    <div class="col-sm col-6">
+        <div class="card" style="width: 50rem;">
+            <div id="card-body" class="card-body">
+
+
+            </div>
+
+            <div id="card-arrow" class="btn-group" role="group" aria-label="Basic example">
+              <button id="rightArrow" type="button" class="btn btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z"></path>
+                </svg>
+              </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm col-4">
+
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+
+<script>
+    document.addEventListener("click", nextCard, false)
+
+    var cards = ""
+    fetch(window.location + 'ajax/')
+        .then(response => {
+            if (response.ok) {
+                response.json().then(responseJSON => {
+                    // json() also returns a response
+                    cards = responseJSON
+                    console.log("Got response")
+                    console.log(cards)
+                    buildCard(cards, 0)
+                })
+            } else {
+                console.log("There was an error: " & response)
+            }
+        })
+
+    function buildCard(cards, cardNr) {
+        console.log("Build card")
+        const elem = document.getElementById("card-body")
+
+        if (cardNr < cards.length) {
+            let card_canvas = ""
+
+            card_canvas = `<h4 id="question" data-cardNr="${cardNr}" class="text-center"> ${cards[cardNr].question}</h4>`
+
+            if (cards[cardNr].card_type === "Multiple choice") {
+                for (let i = 0; i < cards[cardNr].possible_answers.length; i++) {
+                    card_canvas = card_canvas +
+
+                    `<div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something">
+                            <label className="form-check-label">${cards[cardNr].possible_answers[i]}</label>
+                    </div>`
+
+                    // card_canvas = card_canvas + `<h6>${cards[cardNr].possible_answers[i]}</h6>`
+                }
+            } else {
+                card_canvas = card_canvas + `<h6>${cards[cardNr].possible_answers[0]}</h6><button type="button" class="btn btn-secondary">Show answer</button>`
+
+            }``
+
+            elem.innerHTML = card_canvas
+        } else {
+            elem.innerHTML = "<p>You are all set. There are no more cards.</p>"
+            document.getElementById("card-arrow").innerHTML = ""
+        }
+    }
+
+    function nextCard(event) {
+        console.log("Next card")
+        let cardNr = parseInt(document.getElementById("question").getAttribute("data-cardNr"))
+        if (event.target.id === "rightArrow") {
+            buildCard(cards, cardNr + 1)
+        }
+    }
+
+
+
+</script>
+
+
+
+{% endblock %}%}
